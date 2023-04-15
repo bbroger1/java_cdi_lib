@@ -2,19 +2,22 @@ package br.com.rcssoft.rcssoft_lib.helper;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.inject.Inject;
 
 public class MessageHelper {
 
 	private FacesContext context;
+	private Flash flash;
 	
 	@Inject
-	public MessageHelper(FacesContext context) {
+	public MessageHelper(FacesContext context, Flash flash) {
 		this.context = context;
+		this.flash = flash;
 	}
 	
 	public MessageHelper onFlash() {
-		context.getExternalContext().getFlash().setKeepMessages(true);
+		flash.setKeepMessages(true);
 		return this;
 	}
 
