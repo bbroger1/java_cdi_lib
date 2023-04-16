@@ -6,7 +6,6 @@ import javax.inject.Inject;
 import javax.interceptor.AroundInvoke;
 import javax.interceptor.Interceptor;
 import javax.interceptor.InvocationContext;
-import javax.persistence.EntityManager;
 
 import br.com.rcssoft.rcssoft_lib.tx.annotation.Transacional;
 
@@ -15,29 +14,17 @@ import br.com.rcssoft.rcssoft_lib.tx.annotation.Transacional;
 public class GerenciadorDeTransacao implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private EntityManager em;
+	private Transacionado transacionado;
 	
 	@Inject
-	public GerenciadorDeTransacao(EntityManager em) {
-		this.em = em;
+	public GerenciadorDeTransacao(Transacionado transacionado) {
+		this.transacionado = transacionado;
 	}
 	
 	@AroundInvoke	
-	public Object executaTransacao(InvocationContext context) {
-		// abre transacao
-		em.getTransaction().begin();
+	public Object interceptar(InvocationContext context) {
 		
-		try {
-			Object resultado = context.proceed();
-			// commita a transacao
-			em.getTransaction().commit();
-			
-			return resultado;
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-			throw new RuntimeException(e);
-		}
-
+		return transacionado.executaTransacao(context);
 		
 	}
 }
