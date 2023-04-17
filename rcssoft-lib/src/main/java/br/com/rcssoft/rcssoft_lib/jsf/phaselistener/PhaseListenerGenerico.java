@@ -3,14 +3,12 @@ package br.com.rcssoft.rcssoft_lib.jsf.phaselistener;
 import javax.faces.event.PhaseEvent;
 import javax.faces.event.PhaseId;
 import javax.faces.event.PhaseListener;
-import javax.inject.Inject;
 
 public class PhaseListenerGenerico implements PhaseListener {
 
 	private static final long serialVersionUID = 1L;
 
-	@Inject
-	private PhaseListenerObserver observer;
+	private PhaseListenerObserver observer = new PhaseListenerObserver();
 
 	@Override
 	public void afterPhase(PhaseEvent event) {
